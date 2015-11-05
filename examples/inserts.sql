@@ -1,0 +1,12 @@
+insert into employees (first, last, age, city, state) values ('Luke', 'Duke', 45, 'Hazard Co', 'Georgia');
+insert into employees (first, last, age, city, state) values ('John', 'Jones', 45, 'Payson', 'Arizona');
+insert into employees (first, last, age, city, state) values ('Mary', 'Jones', 25, 'Payson', 'Arizona');
+insert into employees (first, last, age, city, state) values ('Eric', 'Edwards', 32, 'San Diego', 'California');
+insert into employees (first, last, age, city, state) values ('Mary Ann', 'Edwards', 32, 'Phoenix', 'Arizona');
+insert into employees (first, last, age, city, state) values ('Ginger', 'Howell', 42, 'Cottonwood', 'Arizona');
+insert into employees (first, last, age, city, state) values ('Sebastian', 'Smith', 23, 'Gila Bend', 'Arizona');
+insert into employees (first, last, age, city, state) values ('Gus', 'Gray', 35, 'Bagdad', 'Arizona');
+insert into employees (first, last, age, city, state) values ('Mary Ann', 'May', 52, 'Tucson', 'Arizona');
+insert into employees (first, last, age, city, state) values ('Erica', 'Williams', 60, 'Show Low', 'Arizona');
+insert into employees (first, last, age, city, state) values ('Leroy', 'Brown', 22, 'Pinetop', 'Arizona');
+insert into employees (first, last, age, city, state) values ('Elroy', 'Cleaver', 22, 'Globe', 'Arizona');

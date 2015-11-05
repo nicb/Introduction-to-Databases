@@ -1,0 +1,5 @@
+Databases  are  at  the  core  of  any  service,   so   grasping   their
+functionalities is not  an  option.  This  lesson  will  concentrate  in
+obtaining  the  students'  basic  understanding  on  how  databases  are
+structured and how they work in real life providing actual examples  and
+exercises.

@@ -1,0 +1,814 @@
+%
+% $Id: slides.tex 145 2015-04-22 09:22:42Z nicb $
+%
+% Copyright (C) 2015 Nicola Bernardini nicb@sme-ccppd.org
+% 
+% This work is licensed under a Creative Commons License, and specifically the
+% 
+%   Creative Commons Attribution-ShareAlike 2.5 License
+%   http://creativecommons.org/licenses/by-sa/2.5/legalcode
+% 
+% Check http://www.creativecommons.org/ for more information on
+% Creative Commons Licenses and the Creative Commons Project.
+%
+% Set the macros below to whatever is appropriate in a given context
+%
+
+\newcommand{\imagedir}{../../images}
+\newcommand{\exampledir}{../../examples}
+\newcommand{\templatedir}{../../../latex/beamer/sme-ccppd}
+\documentclass[\printmode,compress,xcolor=dvipsnames]{beamer}
+
+\usetheme{Copenhagen}
+\usecolortheme{crane}
+
+\usepackage{colortbl}
+\usepackage[british]{babel}
+\usepackage{pgf}
+\usepackage{xspace}
+\usepackage{verbatim}
+
+\usepackage{multimedia}
+\usepackage{xmpmulti}
+\usepackage{hyperref}
+\usepackage[nofancy]{svninfo}
+\newcommand{\rcstag}{v.\svnInfoRevision\ \ \svnInfoDate\xspace}
+\usepackage{gensymb}
+
+\newcommand{\hhref}[1]{\href{#1}{#1}}
+
+\newcommand{\cpyear}{2015}
+\newcommand{\cpholder}{Nicola Bernardini}
+\newcommand{\cpholderemail}{n.bernardini@conservatoriosantacecilia.it}
+
+% Use some nice templates
+
+\beamertemplateshadingbackground{red!10}{structure!10}
+\beamertemplatetransparentcovereddynamic
+\beamertemplateballitem
+\beamertemplatenumberedballsectiontoc
+
+% My colors
+\definecolor{notdone}{gray}{0.35}
+
+%\beamertemplateshadingbackground{white!10}{white!10}
+
+\title[Databases]
+{%
+  A (short) Introduction to Databases\\
+  {\tiny (\rcstag)}
+}
+
+\author{%
+  Nicola Bernardini\\
+    \href{mailto:\cpholderemail}{\cpholderemail}
+}
+\institute[SMERM]%
+{%
+  \href{http://www.conservatoriosantacecilia.it}
+  {``S.Cecilia'' Conservatory - Rome}
+}
+\date[Copenhagen, 22/04/2015]{\scriptsize April 22 2015\\Service Systems Design Master\\Aalborg University in Copenhagen\\Copenhagen, Denmark}
+
+\begin{document}
+\svnInfo $Id: slides.tex 145 2015-04-22 09:22:42Z nicb $
+\newcounter{ms}
+  
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\section{Introduction}
+
+\newlength{\leftcolumn}
+\setlength{\leftcolumn}{0.45\textwidth}
+\newlength{\rightcolumn}
+\setlength{\rightcolumn}{0.55\textwidth}
+
+\begin{frame}
+  \frametitle<+->{Topics we will cover}
+
+  \begin{itemize}[<+- | alert@+->]
+
+      \item Just a touch of history
+
+			\item Why do we need databases
+
+			\item What are they, anyway?
+
+			\item How do they work (in a very basic form)
+
+			\item Exercising database design
+
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+				\frametitle<+->{Topics we will \emph{NOT} cover}
+
+	\uncover<+->{\alert{(but feel free to ask about them if you feel so inclined, by any means :-))}}
+
+  \begin{itemize}[<+- | alert@+->]
+
+      \item Advanced topics, such as:
+
+  				\begin{itemize}[<+- | alert@+->]
+
+						\item search algorithms
+
+						\item data indexing
+
+						\item complex multi--table queries
+
+						\item sophisticated database functions
+
+						\item \dots
+
+          \end{itemize}
+
+  \end{itemize}
+
+\end{frame}
+
+\pgfdeclareimage[width=\leftcolumn]{leibnitz computer}{\imagedir/calcmach}
+
+\setcounter{ms}{0}
+\refstepcounter{ms}
+\begin{frame}
+  \frametitle<+->{What are computers for? (\arabic{ms})}
+
+  \begin{columns}[T]
+    \begin{column}{\leftcolumn}
+      \begin{figure}[H!]
+        \pgfuseimage<5->{leibnitz computer}
+				\uncover<5->{\caption{A Leibnitz computing machine}}
+      \end{figure}
+    \end{column}
+    \begin{column}{\rightcolumn}
+      \begin{itemize}[<+- | alert@+->]
+
+          \item Back in the old days (I mean the eighteenth century)\dots
+
+          \item \dots computers were conceived and built for calculus and
+                  computation
+
+          \item Mathematicians found out that reality was quite more
+                complicate than the abstract models they had conceived\dots
+
+          \item \dots so they invented ``computing technologies'', that is
+                  \uncover<+->{\bfseries computers}
+                  
+
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\pgfdeclareimage[width=\leftcolumn]{IBM 7094}{\imagedir/IBM7094}
+\refstepcounter{ms}
+\begin{frame}
+  \frametitle<+->{What are computers for? (\arabic{ms})}
+
+  \begin{columns}[T]
+    \begin{column}{\leftcolumn}
+      \begin{figure}[H!]
+				\pgfuseimage<5->{IBM 7094}
+				\uncover<5->{\caption{An IBM 7094 (1962)}}
+      \end{figure}
+    \end{column}
+    \begin{column}{\rightcolumn}
+      \begin{itemize}[<+- | alert@+->]
+
+          \item The last time computers were used \emph{solely} for computing purposes
+                  was during World War II
+
+          \item At the end of WW II, computing technology was mature enough to
+                enter the industrial world\dots
+
+          \item \dots and indeed, the computing capability of computers faded into the
+                  background
+
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\pgfdeclareimage[width=\leftcolumn]{samsung galaxy}{\imagedir/samsung_galaxy}
+
+\refstepcounter{ms}
+\begin{frame}
+  \frametitle<+->{What are computers for? (\arabic{ms})}
+  \begin{columns}[T]
+    \begin{column}{\leftcolumn}
+      \begin{figure}[H!]
+          \pgfuseimage<5->{samsung galaxy}
+      \end{figure}
+    \end{column}
+    \begin{column}{\rightcolumn}
+      \begin{itemize}[<+- | alert@+->]
+
+          \item Today, the most useful function of computers is\dots
+
+          \item \dots their ability to \emph{\bfseries store and organize data}
+
+          \item and this is where \uncover<+->{\bfseries databases kick in.}
+
+          \item Computation is still used of course, but it is no longer the
+                core function \uncover<+->{(it appears in several specific
+                fields in what are now called ``number crunching
+                applications'')}
+
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\section{Databases}
+
+\subsection{Introduction}
+
+\pgfdeclareimage[width=\leftcolumn]{data in ram}{\imagedir/data_in_ram}
+
+\setcounter{ms}{0}
+\refstepcounter{ms}
+\begin{frame}
+  \frametitle<+->{So why do we need databases? (\arabic{ms})}
+
+  \begin{columns}[T]
+    \begin{column}{\leftcolumn}
+			\uncover<4->{\verbatiminput{\exampledir/int_42.c}}
+      \pgfuseimage<4->{data in ram}
+    \end{column}
+    \begin{column}{\rightcolumn}
+      \begin{itemize}[<+- | alert@+->]
+
+         \item As you all know, computers structure (and store) information in RAM memory
+
+         \item Data maps into memory straight memory
+
+         \item Memory is characterized by a content and an address (pointer)
+
+         \item An address can also be considered some form of content
+
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\pgfdeclareimage[width=\leftcolumn]{data struct in ram}{\imagedir/data_struct_in_ram}
+
+\refstepcounter{ms}
+\begin{frame}
+  \frametitle<+->{So why do we need databases? (\arabic{ms})}
+
+  \begin{columns}[T]
+    \begin{column}{\leftcolumn}
+			\uncover<4->{\verbatiminput{\exampledir/birthday_ds.c}}
+      \pgfuseimage<4->{data struct in ram}
+    \end{column}
+    \begin{column}{\rightcolumn}
+      \begin{itemize}[<+- | alert@+->]
+
+         \item Furthermore, data in memory can be structured
+
+         \item That is, it can be organized so that complex structures
+               are kept physically together in RAM memory
+
+         \item In the past few decades, these structures have become
+                 \emph{object}, in object--oriented programming lingo
+
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\refstepcounter{ms}
+\begin{frame}
+  \frametitle<+->{So why do we need databases? (\arabic{ms})}
+
+  \begin{itemize}[<+- | alert@+->]
+
+     \item However, data in RAM memory is not persistent
+
+     \item When the computer shuts off, the data is gone
+
+     \item So: data needs to be \emph{persisted}
+
+     \item Which translates into: \uncover<+->{\bfseries databases}
+
+  \end{itemize}
+
+\end{frame}
+
+\subsection{Types}
+
+\setcounter{ms}{0}
+\refstepcounter{ms}
+\begin{frame}
+  \frametitle<+->{How many different kinds of databases are there?}
+
+  \begin{itemize}[<+- | alert@+->]
+
+    \item You can make databases (that is: save your data) with just about
+          anything
+
+          \begin{itemize}[<+- | alert@+->]
+
+            \item log files
+
+            \item line oriented delimited text\\
+                    (f. ex. {\texttt Nicola;Bernardini;Rome;14/08/1956;+4512345678})
+
+            \item spreadsheets
+
+            \item disk file systems
+
+            \item proper relational database
+
+          \end{itemize}
+
+    \item only the last two do not save only \emph{data} but also \emph{relations}
+
+  \end{itemize}
+
+\end{frame}
+
+\subsection{Relations}
+
+\setcounter{ms}{0}
+\refstepcounter{ms}
+\begin{frame}
+  \frametitle<+->{What are relations for? (\arabic{ms})}
+
+  \begin{itemize}[<+- | alert@+->]
+
+    \item If you start collecting data you soon realize that
+
+      \begin{enumerate}[<+- | alert@+->][a) ]
+
+          \item either you repeat parts of the data endlessly
+
+          \item or you have to save \emph{data relations} along with the \emph{data} itself
+
+      \end{enumerate}
+
+    \item and here we get to the {\bfseries golden rule of databases}, namely\dots
+
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle<+->{The Golden Rule of Databases}
+
+  \begin{center}
+    \begin{Huge}
+      \begin{bfseries}
+        \alert{DO NOT REPLICATE DATA.}
+      \end{bfseries}
+    \end{Huge}
+  \end{center}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle<+->{Rationale for the golden rule}
+
+  \begin{itemize}[<+- | alert@+->]
+
+    \item You don't want to replicate data because
+          \uncover<+->{you might need to change it in the future: if your data is
+                  replicated all over, you need to change it all over (very
+                  error-prone)}
+
+    \item while if you keep relationships instead, a single change will be
+            sufficient for each piece of datum you have
+
+  \end{itemize}
+
+\end{frame}
+
+\refstepcounter{ms}
+\begin{frame}
+  \frametitle<+->{What are relations for? (\arabic{ms})}
+
+  \begin{itemize}[<+- | alert@+->]
+
+    \item This is what relations are for. For example:
+
+    \begin{itemize}[<+- | alert@+->]
+
+      \item If you have one \emph{or more} telephone numbers for each person
+              in your agenda (which is likely, or make it e-mail addresses, or whatever)
+
+
+      \item You need to be able to express something like \uncover<+->{``a
+              person \emph{can have many} telphone numbers''}
+              \uncover<+->{or like ``this number \emph{belongs to} this person''}
+
+      \item Both sentences basically establish \emph{a one--way relation} between persons and
+              phone numbers
+
+    \end{itemize}
+  \end{itemize}
+
+\end{frame}
+
+\setcounter{ms}{0}
+\refstepcounter{ms}
+\begin{frame}
+ \frametitle<+->{How do you represent relationships inside computers?  (\arabic{ms})}
+
+ \begin{columns}[T]
+   \begin{column}{\leftcolumn}
+     \uncover<3->{\scriptsize \verbatiminput{\exampledir/pim_ds.c}}
+   \end{column}
+   \begin{column}{\rightcolumn}
+     \begin{itemize}[<+- | alert@+->]
+
+        \item When your data is stored in RAM\dots
+
+        \item \dots you represent relationships by \emph{memory pointers}
+                (also known as \emph{references}) (check the arrow)
+
+        \item but what happens when you want to \emph{persist}
+                the relationship?
+                (== save it to disk)
+
+        \item this (and some more) is what relational databases are for
+
+     \end{itemize}
+   \end{column}
+ \end{columns}
+\end{frame}
+
+\refstepcounter{ms}
+\begin{frame}
+  \frametitle<+->{How do you represent relationships inside computers?  (\arabic{ms})}
+
+  \alert{Before we go on, a question for you.}
+
+  \uncover<+->{
+  \begin{center}
+     \begin{large}
+       \alert{How would you create a persistent telephone book\dots}\\\uncover<+->{\alert{with a filesystem?}}
+     \end{large}
+  \end{center}
+  }
+
+\end{frame}
+
+\refstepcounter{ms}
+\begin{frame}
+  \frametitle<+->{How do you represent relationships inside computers?  (\arabic{ms})}
+
+  \begin{itemize}[<+- | alert@+->]
+
+    \item Current relational database can do much more than that
+
+    \item Within databases, you
+
+    \begin{itemize}[<+- | alert@+->]
+
+      \item add a progressive number to each data structure
+
+      \item this number is guaranteed (by the database engine) to be unique
+
+      \item it is called the \emph{primary key}
+
+    \end{itemize}
+
+    \item Primary keys act like persistent pointers
+
+  \end{itemize}
+
+\end{frame}
+
+
+\refstepcounter{ms}
+\begin{frame}
+  \frametitle<+->{How do you represent relationships inside computers?  (\arabic{ms})}
+
+  \begin{itemize}[<+- | alert@+->]
+
+    \item Relationships are expressed with further indexes, called
+            \emph{foreign keys}
+
+    \item Theoreticians have established that with only \emph{three}
+            kinds of relationships you can describe any type of relation among
+            data
+
+    \item These relationships are\dots
+
+  \end{itemize}
+
+\end{frame}
+
+\pgfdeclareimage[height=0.5\textheight]{model relationship}{\imagedir/ER}
+
+\refstepcounter{ms}
+\begin{frame}
+  \frametitle<+->{How do you represent relationships inside computers?  (\arabic{ms})}
+
+  \begin{itemize}[<+- | alert@+->]
+
+    \item one--to--one \uncover<+->{\normalsize (f.ex: \emph{a husband has only one wife})}
+
+    \item one--to--many \uncover<+->{\normalsize (f.ex: \emph{a football team has many players})}
+
+    \item many--to--many \uncover<+->{\normalsize (f.ex: \emph{a student has many subjects})}
+
+  \end{itemize}
+  \only<+->{\centering \pgfuseimage{model relationship}}
+
+\end{frame}
+
+\pgfdeclareimage[width=\leftcolumn]{one to one}{\imagedir/OneToOne}
+
+\begin{frame}
+  \frametitle<+->{One--to--one relationships}
+
+  \begin{columns}[T]
+    \begin{column}{\leftcolumn}
+      \only<5->{\pgfuseimage{one to one}}
+    \end{column}
+    \begin{column}{\rightcolumn}
+      \begin{itemize}[<+- | alert@+->]
+    
+        \item you establish one--to--one relationships by:
+
+
+           \begin{itemize}[<+- | alert@+->]
+
+              \item creating a first table with an auto--generated primary key
+
+              \item creating a second table with a (\emph{not}
+                      auto--generated) foreign key which points to an instance
+                      of the first table
+    
+           \end{itemize}
+
+      \end{itemize}
+    \end{column}
+  \end{columns}
+
+\end{frame}
+
+\pgfdeclareimage[width=\leftcolumn]{one to many}{\imagedir/ManyToOne}
+
+\begin{frame}
+  \frametitle<+->{One--to--many relationships}
+
+  \begin{columns}[T]
+    \begin{column}{\leftcolumn}
+      \only<5->{\pgfuseimage{one to many}}
+    \end{column}
+    \begin{column}{\rightcolumn}
+      \begin{itemize}[<+- | alert@+->]
+    
+        \item you establish one--to--many relationships by:
+
+
+           \begin{itemize}[<+- | alert@+->]
+
+              \item creating a first table with an auto--generated primary key
+
+              \item creating a second table with an auto--generated primary key
+                      \emph{and} a foreign key which points to an instance
+                      of the first table
+    
+           \end{itemize}
+
+      \end{itemize}
+    \end{column}
+  \end{columns}
+
+\end{frame}
+
+\pgfdeclareimage[height=0.5\textheight]{many to many}{\imagedir/ManyToMany}
+
+\begin{frame}
+  \frametitle<+->{Many--to--many relationships}
+
+    \begin{itemize}[<+- | alert@+->]
+  
+      \item you establish many--to--many relationships by:
+
+
+         \begin{itemize}[<+- | alert@+->]
+
+              \item creating two separate tables with an auto--generated primary keys
+
+              \item creating \emph{a third} table with \emph{two} foreign keys
+                    each pointing to one instance of one of the first two tables
+  
+         \end{itemize}
+
+    \end{itemize}
+    \begin{center}
+    \only<+->{\pgfuseimage{many to many}}
+    \end{center}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle<+->{A real--world example}
+
+  \begin{center}
+    \pgfimage[height=0.95\textheight]{\imagedir/shop_db_schema}
+  \end{center}
+
+\end{frame}
+
+\section[SQL]{Query Language}
+
+\setcounter{ms}{0}
+\refstepcounter{ms}
+\begin{frame}
+  \frametitle<+->{A structured query language (SQL) (\arabic{ms})}
+
+  \begin{itemize}[<+- | alert@+->]
+
+    \item Of course, structuring data is not enough to be able to use it
+          efficiently
+
+    \item You also need to have a way to create, browse, view, update, delete
+          data 
+
+    \item Such a language exists: it is called \emph{SQL} (spelled:
+            \emph{sequel} -- which stands precisely for \emph{Structured Query
+            Language})
+
+    \item With minor changes, SQL can be used over a multitude of different
+            databases ({\tt sqlite}, {\tt MySql}, {\tt PostgreSQL}, {\tt Oracle}, {\tt Informix}, etc.)
+
+  \end{itemize}
+
+\end{frame}
+
+\refstepcounter{ms}
+\begin{frame}
+  \frametitle<+->{A structured query language (SQL) (\arabic{ms})}
+
+  \begin{itemize}[<+- | alert@+->]
+
+    \item SQL is a text--based language: you type some instruction on a database
+            console and the database will reply with an answer
+
+    \item Of course it can also be scripted and put into a file
+
+    \item SQL has several commonly used statements:
+
+    \item ``SELECT'', \uncover<+->{``INSERT'', }\uncover<+->{``UPDATE'', }
+            \uncover<+->{``DELETE'', }\uncover<+->{``CREATE''}
+            \uncover<+->{ and ``DROP''}
+
+    \item ``SELECT'' is the most commonly used, as it is the statement that
+            allows you to make queries (it does not change the database)
+
+  \end{itemize}
+
+\end{frame}
+
+\subsection{SELECT}
+
+\setcounter{ms}{0}
+\refstepcounter{ms}
+\begin{frame}
+  \frametitle<+->{The ``SELECT'' statement (\arabic{ms})}
+
+  \alert{Here is what the ``SELECT'' statement looks like:}
+
+  \begin{center}
+  \begin{large}
+    \uncover<+- | alert@+->{\verbatiminput{\exampledir/select.sql}}
+  \end{large}
+  \end{center}
+
+\end{frame}
+
+\refstepcounter{ms}
+\begin{frame}
+  \frametitle<+->{The ``SELECT'' statement (\arabic{ms})}
+
+  \begin{itemize}[<+- | alert@+->]
+
+    \item Some ``SELECT'' examples:
+
+     \begin{itemize}[<+- | alert@+->]
+
+       \item {\tt select first, last, city from employees where first like 'Er\%';}
+               \uncover<+->{find all first names that begin with `Er' and
+               display first name, last name and city of operation}
+
+       \item {\tt select * from employees where first = 'Eric';}
+               \uncover<+->{find all first names that match the name `Eric' exactly and display all data from them}
+
+       \item {\tt select last, city, age from employees where age > 30;}
+               \uncover<+->{find all employees which are older than 30 years
+               of age and display last name, city and age}
+
+       \item {\tt select last, city, age from employees where (age > 30) and (last like '\%s');}
+               \uncover<+->{find all employees which are older than 30 years
+               of age \emph{and} have a last name that ends in `s' and display last name, city and age}
+
+        \item \dots \uncover<+->{let's do some examples live\dots}
+
+     \end{itemize}
+
+  \end{itemize}
+
+\end{frame}
+
+\section{Exercising}
+
+\begin{frame}
+  \frametitle<+->{Live examples}
+
+  \begin{itemize}
+
+    \item Please download the employees.sqlite from Moodle
+
+    \item If you have a Mac or a Linux laptop, you may open a terminal and
+            type {\tt sqlite3 employees.sqlite} in the folder where you
+            downloaded the db
+
+    \item if you have Windows, you may find a pre--compiled binary at \url{https://www.sqlite.org/download.html}
+
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle<+->{Walk-through exercise}
+
+  \begin{itemize}[<+- | alert@+->]
+
+    \item Let's imagine reverse--engineering\dots \uncover<+->{FaceBook}
+            \uncover<+->{at least partially :-)}
+
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle<+->{DIY Exercise (30 minutes)}
+
+  \begin{enumerate}[<+- | alert@+->]
+
+    \item Pick your own data set and/or application
+
+    \item Design it in terms of a relational database:
+
+     \begin{enumerate}[<+- | alert@+->]
+
+       \item Establish tables
+
+       \item Establish relationships among tables, making sure that no data is
+             replicated
+
+     \end{enumerate}
+
+     \item Discuss your design
+
+  \end{enumerate}
+
+\end{frame}
+
+  %
+  % backup plan for standalone exercise: Rejsekort
+  %
+
+\section{Wrap Up}
+
+\begin{frame}
+	\frametitle<+->{What have we covered}
+
+  \begin{enumerate}[<+- | alert@+->]
+
+    \item What are databases and why do they exist at all
+
+    \item How they are conceived
+
+		\item What are data relationships
+
+		\item An introduction to the SQL language
+
+		\item How to design proper database structures (with some exercising)
+
+  \end{enumerate}
+
+\end{frame}
+
+\begin{frame}
+
+	\begin{center}
+	\begin{Huge}
+		\alert{THANK\ YOU!}
+	\end{Huge}
+	\end{center}
+
+\end{frame}
+
+\end{document}
